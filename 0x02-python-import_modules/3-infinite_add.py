@@ -1,7 +1,12 @@
 #!/usr/bin/python3
+# 3-infinite_add.py
+
+
 if __name__ == "__main__":
-    from sys import argv
+    """Print sum of args."""
+    import sys
+
     sum = 0
-    for a in range(1, len(argv)):
-        sum += int(argv[a])
-    print(sum)
+    for i in range(len(sys.argv) - 1):
+        sum += int(sys.argv[i + 1])
+    print("{}".format(sum))
