@@ -1,3 +1,6 @@
 #!/usr/bin/python3
 def square_matrix_simple(matrix=[]):
-    return list(map(lambda x: list(map(lambda y: y * y, x)), matrix))
+    squared = []
+    for line in matrix:
+        squared.append([c**2 for c in line])
+    return squared
