@@ -1,8 +1,4 @@
 #!/usr/bin/python3
 def square_matrix_simple(matrix=[]):
-    def square_cells(array):
-        result = []
-        for cell in array:
-            result.append(cell ** 2)
-        return result
-    return list(map(square_cells, matrix))
+    """A function that computes the square value. Use Map and Lambda"""
+    return list(map(lambda x: list(map(lambda y: y * y, x)), matrix))
