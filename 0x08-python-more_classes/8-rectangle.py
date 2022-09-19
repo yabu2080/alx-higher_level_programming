@@ -56,7 +56,7 @@ class Rectangle:
             total += (str(self.print_symbol) * self.__width)
             if i != self.__height - 1:
                 total += "\n"
-                return total
+            return total
 
     def __repr__(self):
         return "Rectangle({:d}, {:d})".format(self.__width, self.__height)
