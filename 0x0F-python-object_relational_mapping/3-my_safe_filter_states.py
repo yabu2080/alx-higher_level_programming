@@ -1,42 +1,24 @@
 #!/usr/bin/python3
 """
-List all states matching given name from a MySQL db on localhost at port 3306
+Displays all values in the states table of the database hbtn_0e_0_usa
+whose name matches that supplied as argument.
+Safe from SQL injections.
+Usage: ./3-my_safe_filter_states.py <mysql username> \
+                                    <mysql password> \
+                                    <database name> \
+                                    <state name searched>
 """
+import MySQLdb
+from sys import argv
 
-from mysqlman import MySQLMan
-from MySQLdb import Error
-from sys import argv, exit, stderr
-
-
-HELP = '{} username password database search'.format(argv[0])
-HOST = 'localhost'
-PORT = 3306
-
-
-if __name__ == '__main__':
-    try:
-        params = {
-                'user': argv[1],
-                'password': argv[2],
-                'database': argv[3],
-                'host': HOST,
-                'port': PORT,
-            }
-        search = argv[4]
-    except IndexError:
-        stderr.write('usage: {}\n'.format(HELP))
-        exit(2)
-    try:
-        mysqlman = MySQLMan(connect=True, **params)
-    except Error as e:
-        stderr.write('{}\n'.format(e.args[1]))
-        exit(1)
-    query = """
-    SELECT id, name
-    FROM states
-    WHERE BINARY name = %s
-    ORDER BY id;
-    """
-    results = mysqlman.query([query, (search,)])
-    for row in results[0]:
+if __name__ == "__main__":
+    db = MySQLdb.connect(host="localhost", port=3306, user=argv[1],
+            passwd=argv[2], db=argv[3], charset="utf8")
+    cursor = db.cursor()
+    cursor.execute("SELECT * FROM states WHERE name LIKE %s ORDER BY id ASC",
+            (argv[4],))
+    rows = cursor.fetchall()
+    for row in rows:
         print(row)
+    cursor.close()
+    db.close()
