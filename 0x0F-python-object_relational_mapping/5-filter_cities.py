@@ -16,12 +16,12 @@ PORT = 3306
 if __name__ == '__main__':
     try:
         params = {
-                'user': argv[1],
-                'password': argv[2],
-                'database': argv[3],
-                'host': HOST,
-                'port': PORT,
-            }
+            'user': argv[1],
+            'password': argv[2],
+            'database': argv[3],
+            'host': HOST,
+            'port': PORT,
+        }
         search = argv[4]
     except IndexError:
         stderr.write('usage: {}\n'.format(HELP))
@@ -32,11 +32,11 @@ if __name__ == '__main__':
         stderr.write('{}\n'.format(e.args[1]))
         exit(1)
     query = """
-    SELECT id, name
-    FROM states
-    WHERE BINARY name = %s
-    ORDER BY id;
+    SELECT c.name
+    FROM cities c, states s
+    WHERE c.state_id = s.id
+    AND s.name = %s
+    ORDER BY c.id;
     """
     results = mysqlman.query([query, (search,)])
-    for row in results[0]:
-        print(row)
+    print(', '.join(row[0] for row in results[0]))
